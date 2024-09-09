@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Yazı Ekle</title>
+</head>
+<body>
+    <h1>Yeni Blog Yazısı Ekle</h1>
+    <form method="post">
+        <label for="title">Başlık:</label>
+        <input type="text" id="title" name="title" required><br>
+        <label for="content">İçerik:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br>
+        <input type="submit" value="Yayınla">
+    </form>
+    <a href="{{ url_for('home') }}">Ana Sayfa</a>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Blog</title>
+    <style>
+        body {
+            font-family: Lora, serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 20%;
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .content {
+            width: 60%;
+            background-color: #fff;
+            padding: 20px;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .right-sidebar {
+            width: 20%;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .sidebar h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2em;
+            color: #104414;
+        }
+        .menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        .menu li {
+            margin: 10px 0;
+        }
+        .menu li a {
+            text-decoration: none;
+            color: #104414;
+            font-size: 1.2em;
+        }
+        .menu li a:hover {
+            text-decoration: underline;
+        }
+        .post-button {
+            background-color: #104414;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.5em;
+        }
+        .post-button:hover {
+            background-color: #0a270c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sol Sütun (Sidebar) -->
+    <div class="sidebar">
+        <div>
+            <h1>BLOG</h1>
+            <ul class="menu">
+                <li><a href="#">Anasayfa</a></li>
+                <li><a href="#">Keşfet</a></li>
+                <li><a href="#">Bildirimler</a></li>
+                <li><a href="#">Mesajlar</a></li>
+                <li><a href="#">Hesabım</a></li>
+                <li><a href="#">Ayarlar</a></li>
+            </ul>
+        </div>
+        <div>
+            <button class="post-button">+</button>
+        </div>
+    </div>
+
+    <!-- Orta Sütun (İçerik) -->
+    <div class="content">
+        <h2>İçerik Alanı</h2>
+        <p>Buraya blog içerikleri gelecek.</p>
+    </div>
+
+    <!-- Sağ Sütun (Sağ Sidebar) -->
+    <div class="right-sidebar">
+        <h2>Sağ Sidebar</h2>
+        <p>Buraya ekstra içerik veya reklamlar gelebilir.</p>
+    </div>
+</body>
+</html>
