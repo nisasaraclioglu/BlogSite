@@ -25,6 +25,7 @@
             padding: 20px;
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
+            position: relative;
         }
         .right-sidebar {
             width: 20%;
@@ -66,6 +67,51 @@
         .post-button:hover {
             background-color: #0a270c;
         }
+        .post-form {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            z-index: 10;
+        }
+        .post-form h3 {
+            margin: 0 0 20px;
+            font-size: 1.5em;
+        }
+        .post-form input[type="text"],
+        .post-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .post-form button {
+            padding: 10px 20px;
+            background-color: #104414;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post-form button:hover {
+            background-color: #0a270c;
+        }
+        .post-form .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +129,7 @@
             </ul>
         </div>
         <div>
-            <button class="post-button">+</button>
+            <button class="post-button" onclick="openPostForm()">+</button>
         </div>
     </div>
 
@@ -91,6 +137,18 @@
     <div class="content">
         <h2>İçerik Alanı</h2>
         <p>Buraya blog içerikleri gelecek.</p>
+
+        <!-- Post Ekleme Formu -->
+        <div class="post-form" id="postForm">
+            <button class="close-button" onclick="closePostForm()">×</button>
+            <h3>Post Ekle</h3>
+            <form action="/add" method="POST">
+                <input type="text" name="category" placeholder="Kategori" required>
+                <textarea name="contents" placeholder="İçerik" rows="5" required></textarea>
+                <input type="text" name="tags" placeholder="Etiketler (virgülle ayırın)">
+                <button type="submit">Gönder</button>
+            </form>
+        </div>
     </div>
 
     <!-- Sağ Sütun (Sağ Sidebar) -->
@@ -98,5 +156,17 @@
         <h2>Sağ Sidebar</h2>
         <p>Buraya ekstra içerik veya reklamlar gelebilir.</p>
     </div>
+
+    <script>
+        // Post ekleme formunu aç
+        function openPostForm() {
+            document.getElementById('postForm').style.display = 'block';
+        }
+
+        // Post ekleme formunu kapat
+        function closePostForm() {
+            document.getElementById('postForm').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
