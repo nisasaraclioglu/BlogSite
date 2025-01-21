@@ -49,6 +49,7 @@ class Post(db.Model):
     tags = db.Column(db.Text)
     created_at = db.Column(db.TIMESTAMP, default=db.func.current_timestamp())
     last_updated = db.Column(db.TIMESTAMP, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    customer = db.relationship('Customer', backref=db.backref('posts', lazy=True))
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -94,28 +95,37 @@ class Like(db.Model):
 def start():
     return render_template('start.html')
 
+
 @app.route('/home')
 def home():
-    posts = Post.query.all()
+    posts = Post.query.order_by(db.func.rand()).limit(20).all()
     return render_template('home.html', posts=posts)
+
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', post=post)
 
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
+    if 'user_id' not in session:  # Kullanıcı giriş yapmamışsa
+        return redirect(url_for('login'))  # Giriş sayfasına yönlendir
+
     if request.method == 'POST':
-        customer_id = 1  # Şimdilik sabit müşteri (oturum yönetimi eklenebilir)
+        customer_id = session['user_id']  # Oturumdaki kullanıcıyı alın
         contents = request.form['contents']
         category = request.form['category']
         tags = request.form['tags']
+        
         new_post = Post(customer_id=customer_id, contents=contents, category=category, tags=tags)
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('home'))
+    
     return render_template('add_post.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -170,6 +180,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/verify_email', methods=['GET', 'POST'])
 def verify_email():
     if request.method == 'POST':
@@ -204,6 +215,13 @@ def verify_email():
 
     return render_template('verify_email.html')
 
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)  # Kullanıcı oturumunu sonlandır
+    return redirect(url_for('start'))  # Ana sayfaya yönlendir
+
+
 @app.route('/follow/<int:customer_id>', methods=['POST'])
 def follow(customer_id):
     current_user_id = 1  # Örneğin: Şu an oturum açmış kullanıcı (oturum sistemi ile değiştirilebilir)
@@ -212,17 +230,20 @@ def follow(customer_id):
     db.session.commit()
     return redirect(url_for('home'))
 
+
 @app.route('/followers/<int:customer_id>')
 def followers(customer_id):
     customer = Customer.query.get_or_404(customer_id)
     followers = customer.followers.all()  # Kullanıcının takipçileri
     return render_template('followers.html', followers=followers)
 
+
 @app.route('/following/<int:customer_id>')
 def following(customer_id):
     customer = Customer.query.get_or_404(customer_id)
     following = customer.following.all()  # Kullanıcının takip ettiği kişiler
     return render_template('following.html', following=following)
+
 
 @app.route('/like/<int:post_id>', methods=['POST'])
 def like_post(post_id):
@@ -231,6 +252,7 @@ def like_post(post_id):
     db.session.add(like)
     db.session.commit()
     return redirect(url_for('home'))
+
 
 if __name__ == '__main__':
     with app.app_context():

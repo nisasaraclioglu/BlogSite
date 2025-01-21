@@ -10,7 +10,8 @@
             margin: 0;
             display: flex;
             height: 100vh;
-        }
+            overflow: hidden; /* Tüm sayfanın kaydırılmasını engeller */
+        }        
         .sidebar {
             width: 20%;
             background-color: #f0f0f0;
@@ -26,7 +27,9 @@
             border-left: 1px solid #ddd;
             border-right: 1px solid #ddd;
             position: relative;
-        }
+            overflow-y: auto; /* Kaydırma çubuğu ekler */
+            height: 100vh; /* Tüm ekran yüksekliğini kaplar */
+        }        
         .right-sidebar {
             width: 20%;
             background-color: #f9f9f9;
@@ -112,6 +115,49 @@
             font-size: 1.2em;
             cursor: pointer;
         }
+        .post {
+            border: 2px solid #104414; /* Yeşil çerçeve */
+            border-radius: 15px; /* Yuvarlak köşeler */
+            padding: 20px; /* İç boşluk */
+            margin-bottom: 20px; /* Alt boşluk */
+            background-color: #f9fff9; /* Açık yeşil arka plan */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+        }
+    
+        .post h3 {
+            margin: 0;
+            color: #104414; /* Kullanıcı adı rengi */
+        }
+    
+        .post p {
+            margin: 10px 0;
+            font-size: 1em;
+        }
+    
+        .post .tags {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    
+        .post .info {
+            font-size: 0.8em;
+            color: #777;
+        }
+        .logout-link {
+            display: block;
+            text-decoration: none;
+            color: #104414;
+            font-size: 1.2em;
+            margin-bottom: 20px; /* "+" butonuyla mesafe bırak */
+            text-align: left; /* Yazıyı sola yasla */
+        }
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+        .post-button {
+            margin-top: 10px; /* Ekstra üst boşluk */
+        }
     </style>
 </head>
 <body>
@@ -129,14 +175,33 @@
             </ul>
         </div>
         <div>
+            <a href="/logout" class="logout-link">Çıkış Yap</a>
             <button class="post-button" onclick="openPostForm()">+</button>
         </div>
     </div>
 
     <!-- Orta Sütun (İçerik) -->
     <div class="content">
-        <h2>İçerik Alanı</h2>
-        <p>Buraya blog içerikleri gelecek.</p>
+        <h2>Gönderiler</h2>
+        {% for post in posts %}
+        <div class="post">
+            <!-- Kullanıcı adı -->
+            <h3>{{ post.customer.username }}</h3>
+            
+            <!-- İçerik -->
+            <p style="font-size: 1.5em;">{{ post.contents }}</p>
+            
+            <!-- Etiketler -->
+            <p class="tags">{% for tag in post.tags.split(',') %}#{{ tag.strip() }} {% endfor %}</p>
+            
+            <!-- Alt Bilgi -->
+            <div class="info">
+                <span>Kategori: {{ post.category }}</span> |
+                <span>Beğeni: {{ post.likes }}</span> |
+                <span>Yorum: {{ post.comments|length }}</span>
+            </div>
+        </div>
+        {% endfor %} 
 
         <!-- Post Ekleme Formu -->
         <div class="post-form" id="postForm">
